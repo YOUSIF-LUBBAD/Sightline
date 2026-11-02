@@ -1,0 +1,76 @@
+Sightline — Proprietary rights and limited access terms
+
+Copyright (c) 2026 Yousif Lubbad.
+All rights reserved in original copyrightable contributions owned by Yousif Lubbad.
+
+1. Ownership and scope
+
+This notice covers original copyrightable code, tests, documentation, designs,
+and other expression owned by Yousif Lubbad in this project (Covered Material).
+It does not claim ownership of dependencies, model weights, third-party works,
+public-domain material, facts, ideas, algorithms as such, or expression that
+is not eligible for copyright. Repository control does not transfer another
+person's intellectual property. Existing third-party terms remain applicable.
+
+2. Rights reserved
+
+Except as expressly permitted below, by a separate applicable license, or by
+law, no license is granted to copy, modify, adapt, translate, redistribute,
+publish, mirror, rehost, sublicense, sell, rent, or incorporate Covered Material
+into another project, product, service, assignment, or dataset. These reservations
+apply to commercial and non-commercial reuse. Attribution alone is not permission.
+No permission is granted to copy Covered Material for model training, fine-tuning,
+evaluation, or dataset assembly where that activity requires the owner's consent.
+
+3. Viewing and platform rights
+
+You may inspect the source for personal review and genuine recruiting evaluation.
+For public copies on GitHub, GitHub's applicable hosting rights and users' rights
+to view and fork through its functionality remain effective. This does not grant
+a general license to run, distribute, rehost, or reuse the project. The owner may
+authorize development, testing, and use separately, including through service
+providers acting on his instructions.
+
+4. Exceptions and existing rights
+
+This notice does not revoke prior licenses or permissions, restrict a separately
+licensed dependency, override GitHub's terms, or limit fair use, fair dealing,
+or another right protected by applicable law. Dependency and model licenses govern
+their own material. No patent or trademark license is granted. Credits are not
+proof of permission for a third-party work. See THIRD_PARTY_NOTICES.md.
+
+5. Attribution and permission
+
+Preserve applicable copyright, license, and attribution notices in authorized
+copies. Do not misrepresent Covered Material as your own work or imply endorsement.
+For additional permission, contact Yousif Lubbad through the contact details
+published at https://github.com/YOUSIF-LUBBAD and identify the files, revision,
+purpose, distribution, and commercial context. Permission must expressly cover
+the proposed use. Public availability, silence, and a fork are not consent.
+
+6. Contributions
+
+Outside contributions require advance written agreement on provenance, ownership,
+attribution, and integration rights. A pull request or review does not transfer
+copyright. Contributors retain their rights unless a valid separate agreement
+states otherwise. See CONTRIBUTING.md before submitting code or assets.
+
+7. Warranty and liability
+
+TO THE EXTENT PERMITTED BY LAW, COVERED MATERIAL IS PROVIDED AS IS, WITHOUT EXPRESS
+OR IMPLIED WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+AND NONINFRINGEMENT. TO THE SAME EXTENT, YOUSIF LUBBAD IS NOT LIABLE FOR LOSS OR
+DAMAGE ARISING FROM ACCESS TO OR USE OF COVERED MATERIAL. These limits do not
+exclude liability that cannot legally be excluded or replace a separate agreement.
+
+8. Enforcement and interpretation
+
+The owner reserves the right to request removal of infringing copies and seek
+remedies available under applicable law. This notice creates no automatic fine,
+guaranteed damages, or presumption of infringement. Enforceability depends on law
+and the facts. Delay in enforcement does not itself grant a license. An invalid
+provision applies only to the extent law permits, without expanding any license.
+
+This notice is not a copyright, trademark, or patent registration, a transfer of
+ownership, or a signed contract formed merely by viewing the project. All rights
+not expressly granted remain reserved, subject to the exceptions above.
