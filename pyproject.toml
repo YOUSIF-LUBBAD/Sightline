@@ -29,3 +29,18 @@ packages = ["src/sightline"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src", "tests", "examples", "docs", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CONTRIBUTING.md", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+  "ocr: runs actual EasyOCR model inference (opt in)",
+  "live: captures and clicks an isolated desktop (opt in)",
+]
+
+[tool.coverage.run]
+source = ["sightline"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
