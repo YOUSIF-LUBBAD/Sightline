@@ -43,6 +43,8 @@ jobs:
         run: python -m pytest --cov --cov-report=term-missing --cov-report=xml --junitxml=artifacts/unit.xml
       - name: Build the source archive and wheel
         run: python -m build
+      - name: Verify ownership metadata and a clean wheel installation
+        run: python scripts/verify_dist.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:

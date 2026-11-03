@@ -28,7 +28,7 @@ Issues = "https://github.com/YOUSIF-LUBBAD/Sightline/issues"
 packages = ["src/sightline"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "tests", "examples", "docs", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CONTRIBUTING.md", "pyproject.toml"]
+include = ["src", "tests", "examples", "scripts", "docs", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CONTRIBUTING.md", "pyproject.toml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
