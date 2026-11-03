@@ -17,7 +17,12 @@ def test_import_does_not_load_desktop_or_models() -> None:
     env = os.environ.copy()
     env.pop("DISPLAY", None)
     result = subprocess.run(
-        [sys.executable, "-c", "import sightline, sys; assert not {'easyocr', 'torch', 'pyautogui', 'mss'} & sys.modules.keys()"],
+        [
+            sys.executable,
+            "-c",
+            "import sightline, sys; "
+            "assert not {'easyocr', 'torch', 'pyautogui', 'mss'} & sys.modules.keys()",
+        ],
         env=env,
         capture_output=True,
         text=True,
