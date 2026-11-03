@@ -10,6 +10,7 @@ from sightline.locator import AmbiguousTarget, TargetNotFound
 from sightline.mouse import InputError
 from sightline.ocr import OcrError, TextDetection
 from sightline.session import Sightline
+from sightline.timing import Timings
 
 
 class Source:
@@ -54,6 +55,18 @@ def setup_session() -> tuple[Sightline, Source, Engine, Mouse]:
     engine = Engine((TextDetection("Start", Box(100, 100, 300, 200), 0.95),))
     mouse = Mouse()
     return Sightline(source, engine, mouse), source, engine, mouse
+
+
+def test_timed_session_distinguishes_preview_from_execution(setup_session) -> None:
+    _, source, engine, mouse = setup_session
+    timings = Timings()
+    session = Sightline(source, engine, mouse, timings=timings)
+    session.click_text("Start")
+    assert set(timings.snapshot()) == {"capture", "ocr.read", "locate", "input.map"}
+    session.click_text("Start", execute=True)
+    stages = timings.snapshot()
+    assert stages["input.click"].calls == stages["input.validate"].calls == 1
+    assert stages["capture"].calls == stages["ocr.read"].calls == 2
 
 
 def test_default_is_a_dry_run(setup_session) -> None:
