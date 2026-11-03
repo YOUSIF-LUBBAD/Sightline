@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Yousif Lubbad. See LICENSE.
 .venv/
 __pycache__/
 *.py[cod]
