@@ -1,6 +1,8 @@
 # Copyright (c) 2026 Yousif Lubbad. See LICENSE.
 """Find tiles with pixel changes. True means at least one RGB channel changed."""
 
+from typing import cast
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -22,10 +24,14 @@ def changed_tiles(
     """Compare absolute channel differences, including partial tiles at the edges."""
     check_diff(previous, current, tile_size, threshold)
     if threshold == 0:
-        changed = np.any(previous.pixels != current.pixels, axis=2)
+        changed = previous.pixels != current.pixels
     else:
         # Widen before subtraction so a black-to-white change cannot wrap around.
         delta = np.subtract(previous.pixels, current.pixels, dtype=np.int16)
-        changed = np.any(np.abs(delta) > threshold, axis=2)
-    rows = np.logical_or.reduceat(changed, np.arange(0, current.height, tile_size), axis=0)
-    return np.logical_or.reduceat(rows, np.arange(0, current.width, tile_size), axis=1)
+        changed = np.abs(delta) > threshold
+    # Group adjacent RGB bytes before combining rows. This avoids one reduction per pixel.
+    scanlines = changed.reshape(current.height, -1)
+    starts = np.arange(0, current.width * 3, tile_size * 3)
+    runs = np.logical_or.reduceat(scanlines, starts, axis=1)
+    mask = np.logical_or.reduceat(runs, np.arange(0, current.height, tile_size), axis=0)
+    return cast(NDArray[np.bool_], mask)
