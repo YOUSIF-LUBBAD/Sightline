@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 from numpy.typing import NDArray
 
-from sightline.diff import check_diff
+from sightline.diff import checked_pixels
 from sightline.frame import Frame
 from sightline.regions import GridRect, check_mask
 
@@ -33,15 +33,16 @@ class NativeBackend:
     def changed_tiles(
         self, previous: Frame, current: Frame, tile_size: int = 32, threshold: int = 0
     ) -> NDArray[np.bool_]:
-        check_diff(previous, current, tile_size, threshold)
-        rows = (current.height + tile_size - 1) // tile_size
-        cols = (current.width + tile_size - 1) // tile_size
+        before, after = checked_pixels(previous, current, tile_size, threshold)
+        height, width, _ = after.shape
+        rows = (height + tile_size - 1) // tile_size
+        cols = (width + tile_size - 1) // tile_size
         mask = np.empty((rows, cols), dtype=bool)
         status = self._diff(
-            previous.pixels.ctypes.data,
-            current.pixels.ctypes.data,
-            current.width,
-            current.height,
+            before.ctypes.data,
+            after.ctypes.data,
+            width,
+            height,
             tile_size,
             threshold,
             mask.ctypes.data,
@@ -52,8 +53,10 @@ class NativeBackend:
         return mask
 
     def merge_tiles(self, mask: NDArray[np.bool_]) -> list[GridRect]:
-        check_mask(mask)
-        grid = np.ascontiguousarray(mask)
+        # ctypes releases the GIL. Both C passes need the same private mask, even
+        # when the caller edits its original array from another thread.
+        grid = np.array(mask, order="C", copy=True)
+        check_mask(grid)
         rows, cols = grid.shape
         count = ct.c_size_t()
         args = (grid.ctypes.data, rows, cols)

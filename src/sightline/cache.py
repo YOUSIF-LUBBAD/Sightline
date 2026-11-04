@@ -39,7 +39,7 @@ class CachedOCR:
 
     def read(self, frame: Frame) -> tuple[TextDetection, ...]:
         with timed(self.timings, "cache.hash"):
-            digest = hashlib.blake2b(memoryview(frame.pixels), digest_size=32).digest()
+            digest = hashlib.blake2b(frame.pixels.data, digest_size=32).digest()
             key = (frame.height, frame.width, digest)
         with self._lock:
             with timed(self.timings, "cache.lookup"):

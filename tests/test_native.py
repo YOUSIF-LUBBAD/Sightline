@@ -46,6 +46,22 @@ def test_every_three_by_three_mask_and_strided_random_views(native) -> None:
         assert native.merge_tiles(grid) == merge_tiles(grid)
 
 
+def test_caller_edit_between_native_passes_cannot_change_emitted_boxes(native, monkeypatch) -> None:
+    mask = np.eye(7, dtype=bool)
+    expected = merge_tiles(mask)
+    compiled = native._merge
+
+    def edit_after_count(pointer, rows, cols, output, capacity, count):
+        status = compiled(pointer, rows, cols, output, capacity, count)
+        if output is None:
+            mask[:] = False
+        return status
+
+    monkeypatch.setattr(native, "_merge", edit_after_count)
+    assert native.merge_tiles(mask) == expected
+    assert not mask.any()
+
+
 def test_parallel_backends_reject_bad_inputs_before_calling_c(native) -> None:
     frame = Frame(np.ones((1, 1, 3), dtype=np.uint8))
     for diff in (native.changed_tiles, changed_tiles):
@@ -56,3 +72,17 @@ def test_parallel_backends_reject_bad_inputs_before_calling_c(native) -> None:
             merge(np.zeros((0, 1), dtype=bool))
         with pytest.raises(ValueError):
             merge(np.ones((3, 3), dtype=np.uint8))
+
+
+@pytest.mark.filterwarnings("ignore:Setting the shape on a NumPy array:DeprecationWarning")
+def test_an_invalid_array_layout_cannot_reach_c(native, monkeypatch) -> None:
+    frame = Frame(np.zeros((2, 4, 3), dtype=np.uint8))
+    # Pixel bytes are immutable, but NumPy still allows editing the shape metadata.
+    frame.pixels.shape = (2, 12, 1)
+
+    def reject_call(*args):
+        pytest.fail("An invalid RGB layout reached the native kernel")
+
+    monkeypatch.setattr(native, "_diff", reject_call)
+    with pytest.raises(ValueError, match="RGB"):
+        native.changed_tiles(frame, frame)
