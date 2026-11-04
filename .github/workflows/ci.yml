@@ -41,10 +41,14 @@ jobs:
           mypy
       - name: Run offline tests with coverage
         run: python -m pytest --cov --cov-report=term-missing --cov-report=xml --junitxml=artifacts/unit.xml
+      - name: Compile native kernels and run the paired benchmark
+        run: |
+          python -m sightline.native_build build/native
+          python -m sightline.bench --native build/native/sightline_pixels.so --size 257x135 --warmups 1 --repeats 3 --output artifacts/kernel-benchmark.json
       - name: Build the source archive and wheel
         run: python -m build
       - name: Verify ownership metadata and a clean wheel installation
-        run: python scripts/verify_dist.py
+        run: python scripts/verify_dist.py --native
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
@@ -52,6 +56,7 @@ jobs:
           path: |
             coverage.xml
             artifacts/unit.xml
+            artifacts/kernel-benchmark.json
             dist/
           retention-days: 14
 
@@ -93,6 +98,11 @@ jobs:
           xvfb-run -a -s '-screen 0 ${{ matrix.screen }} -nolisten tcp'
           python -m pytest --run-ocr --run-live --download-models
           -m 'ocr or live' --junitxml=artifacts/native.xml
+      - name: Check the seven-frame sequence with real OCR in a worker
+        if: matrix.screen == '1280x800x24'
+        run: |
+          python -m sightline.native_build build/native
+          python -m examples.benchmark_ocr --native build/native/sightline_pixels.so --worker --rounds 1 --output artifacts/ocr-sequence.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
