@@ -4,20 +4,25 @@
 
 Sightline reads screen pixels, finds visible text, and clicks its center. Its
 long-term goal is to operate unfamiliar interfaces without DOM selectors,
-accessibility trees, or app-specific APIs. Phase 1 delivers the first working
-slice: **capture → OCR → find a unique label → click**.
+accessibility trees, or app-specific APIs. The first phase connected capture,
+recognition, and clicking. Phase 2 reads a sequence efficiently by finding which
+pixels changed and choosing how much of the screen to read again.
 
-**Status:** Phase 1 foundation, `0.1.0.dev1`. The package builds locally. The
-`sightline-ui` name is used in metadata; it is not reserved or published to PyPI.
+**Phase 2 · `0.2.0.dev1`.** On the seven-frame demo sequence, the median time
+dropped from 17.73 s to 5.73 s (3.10×) across five warmed CPU rounds on an Intel Xeon. The
+first frame and the full theme change took longer on the incremental path.
+[Benchmark setup and raw samples](docs/phase2.md).
 Later features are tracked in [the roadmap](docs/roadmap.md).
 
 ## Working today
 
-| Area | Phase 1 implementation |
+| Area | Current implementation |
 | --- | --- |
 | Frames | Immutable RGB images, validated boxes, image-to-desktop coordinate scaling |
 | Sources | A `FrameSource` interface, saved images, primary-screen MSS capture |
 | OCR | Lazy EasyOCR loading, CPU inference, explicit model downloads, validated detections |
+| Repeated reads | NumPy or compiled C tile differences, region OCR, a bounded image cache, and an optional OCR worker process |
+| Measurement | Per-stage timings, paired C/NumPy benchmarks, and a labeled seven-frame OCR benchmark |
 | Locators | Exact or substring matching, Unicode normalization, confidence filtering, duplicate rejection |
 | Input | A proposed click by default; explicit execution with bounds, age, display-size, and fail-safe checks |
 | Engineering | pytest, Ruff, strict mypy, typed package, source/wheel builds, GitHub Actions configuration |
@@ -73,6 +78,22 @@ point, and whether a click was executed. Saved images have no mouse mapping and
 cannot be clicked. Missing text, duplicate matches, and backend failures produce
 a clear error and a nonzero exit status. See [the API guide](docs/architecture.md).
 
+## Read a sequence
+
+Use consecutive screenshots of the same app, in capture order. Each JSON line
+shows the recognized labels, which regions were read, cache use, and stage times.
+
+```bash
+python -m examples.observe_changes --images first.png second.png third.png --worker --download-models
+```
+
+For a live demonstration, use `--live 5` in place of the image list. The example
+observes five frames of the primary screen. To enable the C kernels, run
+`python -m sightline.native_build build/native` and pass its printed path with
+`--native`. NumPy is the default backend.
+
+[Phase 2 measurements, API examples, and reproduction commands](docs/phase2.md).
+
 ## Verification
 
 ```bash
@@ -81,8 +102,8 @@ ruff format --check .
 ruff check .
 mypy
 pytest --cov --cov-report=term-missing
-python -m build
-python scripts/verify_dist.py
+python -m build --outdir build/dist
+python scripts/verify_dist.py build/dist --native
 ```
 
 The normal suite does not open a desktop, download models, or send mouse events.
@@ -93,13 +114,12 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 xvfb-run -a -s '-screen 0 1280x800x24 -nolis
   python -m pytest --run-ocr --run-live --download-models -m 'ocr or live'
 ```
 
-Recorded local results: **77 offline tests passed, 93% combined statement/branch
-coverage**, and **five real OCR/native tests passed at each of 1280×800 and
-1920×1080**, including light and dark themes. These are small correctness checks,
-not a general benchmark. GitHub Actions runs the offline checks on Python 3.11–3.13
-and the real model/native tests at both resolutions. See the
-[latest CI results](https://github.com/YOUSIF-LUBBAD/Sightline/actions/workflows/ci.yml).
-[Validation details and the 18 commits](docs/phase1.md).
+Phase 2 passed **115 offline tests** and **eight real OCR/native cases at each
+of 1280×800 and 1920×1080**, including light and dark native clicks. The offline
+suite measured 83% combined statement/branch coverage. GitHub Actions runs
+the checks on Python 3.11–3.13 and the live tests on Linux X11 with Python 3.12.
+[Current CI runs](https://github.com/YOUSIF-LUBBAD/Sightline/actions/workflows/ci.yml)
+and [Phase 1 validation](docs/phase1.md).
 
 ## Current limits
 
@@ -112,8 +132,9 @@ OCR confidence is a filter, not a correctness guarantee.
 
 This version does not identify button semantics, avoid destructive labels by
 meaning, explore apps, type text, self-heal, record/replay, or index video. It sends
-one explicit click to a unique visible text match. There are no published speed,
-precision, recall, or character-error claims yet.
+one explicit click to a unique visible text match. The Phase 2 benchmarks cover
+pixel kernels and one controlled OCR sequence. The broader accuracy and
+robustness benchmark is planned for Phase 9.
 
 ## Ownership
 

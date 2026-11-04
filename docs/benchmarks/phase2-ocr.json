@@ -1,0 +1,1290 @@
+{
+  "schema": 1,
+  "author": "Yousif Lubbad",
+  "kind": "owned OCR sequence",
+  "size": "800x480",
+  "rounds": 5,
+  "python": "3.12.14",
+  "easyocr": "1.7.2",
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.4",
+  "pixel_backend": "c",
+  "median_sequence_ns": {
+    "full": 15103411600,
+    "incremental": 4603945388
+  },
+  "full_over_incremental": 3.280536654358768,
+  "runs": [
+    {
+      "round": 1,
+      "method": "full",
+      "sequence_ns": 14540614454,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2059200944,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 1869479177,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1865873282,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2257121579,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2207124572,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2107533249,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2174281651,
+          "read": {
+            "mode": "full"
+          }
+        }
+      ],
+      "stages": {
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 14540376024,
+          "last_ns": 2174260509
+        }
+      },
+      "cache": null
+    },
+    {
+      "round": 1,
+      "method": "incremental",
+      "sequence_ns": 4722061057,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2157359378,
+          "read": {
+            "mode": "full",
+            "reason": "first frame",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 462495,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 145249855,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 312880,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 203789338,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 198,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 828485,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2214058626,
+          "read": {
+            "mode": "full",
+            "reason": "large change",
+            "regions": []
+          }
+        }
+      ],
+      "stages": {
+        "cache.hash": {
+          "calls": 5,
+          "total_ns": 2934922,
+          "last_ns": 1384822
+        },
+        "cache.lookup": {
+          "calls": 5,
+          "total_ns": 31248,
+          "last_ns": 1332
+        },
+        "ocr.infer": {
+          "calls": 4,
+          "total_ns": 4716224264,
+          "last_ns": 2212568876
+        },
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 4722024654,
+          "last_ns": 2214054650
+        },
+        "diff": {
+          "calls": 6,
+          "total_ns": 1435318,
+          "last_ns": 33421
+        },
+        "merge": {
+          "calls": 3,
+          "total_ns": 353752,
+          "last_ns": 259580
+        },
+        "roi.plan": {
+          "calls": 3,
+          "total_ns": 177277,
+          "last_ns": 56866
+        },
+        "roi.crop": {
+          "calls": 3,
+          "total_ns": 111097,
+          "last_ns": 38558
+        },
+        "roi.translate": {
+          "calls": 3,
+          "total_ns": 40549,
+          "last_ns": 9143
+        },
+        "roi.reconcile": {
+          "calls": 3,
+          "total_ns": 35243,
+          "last_ns": 8352
+        }
+      },
+      "cache": {
+        "hits": 1,
+        "misses": 4,
+        "entries": 4
+      }
+    },
+    {
+      "round": 2,
+      "method": "incremental",
+      "sequence_ns": 4603945388,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2167877995,
+          "read": {
+            "mode": "full",
+            "reason": "first frame",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 578330,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 152035386,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 371879,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 150713817,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 198,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 733443,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2131634538,
+          "read": {
+            "mode": "full",
+            "reason": "large change",
+            "regions": []
+          }
+        }
+      ],
+      "stages": {
+        "cache.hash": {
+          "calls": 5,
+          "total_ns": 3339570,
+          "last_ns": 1599014
+        },
+        "cache.lookup": {
+          "calls": 5,
+          "total_ns": 10887,
+          "last_ns": 1212
+        },
+        "ocr.infer": {
+          "calls": 4,
+          "total_ns": 4597826568,
+          "last_ns": 2129927111
+        },
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 4603907189,
+          "last_ns": 2131630531
+        },
+        "diff": {
+          "calls": 6,
+          "total_ns": 1805815,
+          "last_ns": 37927
+        },
+        "merge": {
+          "calls": 3,
+          "total_ns": 137827,
+          "last_ns": 40200
+        },
+        "roi.plan": {
+          "calls": 3,
+          "total_ns": 170365,
+          "last_ns": 59409
+        },
+        "roi.crop": {
+          "calls": 3,
+          "total_ns": 143015,
+          "last_ns": 66240
+        },
+        "roi.translate": {
+          "calls": 3,
+          "total_ns": 34462,
+          "last_ns": 9655
+        },
+        "roi.reconcile": {
+          "calls": 3,
+          "total_ns": 34332,
+          "last_ns": 7362
+        }
+      },
+      "cache": {
+        "hits": 1,
+        "misses": 4,
+        "entries": 4
+      }
+    },
+    {
+      "round": 2,
+      "method": "full",
+      "sequence_ns": 15103411600,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2352638025,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2209560977,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2010752345,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1835133417,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2063012349,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2177166825,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2455147662,
+          "read": {
+            "mode": "full"
+          }
+        }
+      ],
+      "stages": {
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 15103255595,
+          "last_ns": 2455126160
+        }
+      },
+      "cache": null
+    },
+    {
+      "round": 3,
+      "method": "full",
+      "sequence_ns": 15369935356,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2475896886,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2225714187,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2325209385,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2258311360,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 1983071710,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2157620430,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1944111398,
+          "read": {
+            "mode": "full"
+          }
+        }
+      ],
+      "stages": {
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 15369790609,
+          "last_ns": 1944091398
+        }
+      },
+      "cache": null
+    },
+    {
+      "round": 3,
+      "method": "incremental",
+      "sequence_ns": 4965831801,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2079027576,
+          "read": {
+            "mode": "full",
+            "reason": "first frame",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 431518,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 156323329,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 385359,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 218773331,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 198,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 588655,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2510302033,
+          "read": {
+            "mode": "full",
+            "reason": "large change",
+            "regions": []
+          }
+        }
+      ],
+      "stages": {
+        "cache.hash": {
+          "calls": 5,
+          "total_ns": 2624715,
+          "last_ns": 1167475
+        },
+        "cache.lookup": {
+          "calls": 5,
+          "total_ns": 7101,
+          "last_ns": 1002
+        },
+        "ocr.infer": {
+          "calls": 4,
+          "total_ns": 4960694712,
+          "last_ns": 2509031454
+        },
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 4965762457,
+          "last_ns": 2510296975
+        },
+        "diff": {
+          "calls": 6,
+          "total_ns": 1492613,
+          "last_ns": 29765
+        },
+        "merge": {
+          "calls": 3,
+          "total_ns": 109313,
+          "last_ns": 37046
+        },
+        "roi.plan": {
+          "calls": 3,
+          "total_ns": 158168,
+          "last_ns": 53480
+        },
+        "roi.crop": {
+          "calls": 3,
+          "total_ns": 106290,
+          "last_ns": 34582
+        },
+        "roi.translate": {
+          "calls": 3,
+          "total_ns": 29554,
+          "last_ns": 7741
+        },
+        "roi.reconcile": {
+          "calls": 3,
+          "total_ns": 30967,
+          "last_ns": 7221
+        }
+      },
+      "cache": {
+        "hits": 1,
+        "misses": 4,
+        "entries": 4
+      }
+    },
+    {
+      "round": 4,
+      "method": "incremental",
+      "sequence_ns": 4550871172,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2289323535,
+          "read": {
+            "mode": "full",
+            "reason": "first frame",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 482415,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 179955894,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 343016,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 128077841,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 198,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 709196,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1951979275,
+          "read": {
+            "mode": "full",
+            "reason": "large change",
+            "regions": []
+          }
+        }
+      ],
+      "stages": {
+        "cache.hash": {
+          "calls": 5,
+          "total_ns": 3149332,
+          "last_ns": 1208766
+        },
+        "cache.lookup": {
+          "calls": 5,
+          "total_ns": 8203,
+          "last_ns": 881
+        },
+        "ocr.infer": {
+          "calls": 4,
+          "total_ns": 4545148842,
+          "last_ns": 1950673382
+        },
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 4550829099,
+          "last_ns": 1951974689
+        },
+        "diff": {
+          "calls": 6,
+          "total_ns": 1677791,
+          "last_ns": 31186
+        },
+        "merge": {
+          "calls": 3,
+          "total_ns": 113490,
+          "last_ns": 38828
+        },
+        "roi.plan": {
+          "calls": 3,
+          "total_ns": 173120,
+          "last_ns": 57857
+        },
+        "roi.crop": {
+          "calls": 3,
+          "total_ns": 112320,
+          "last_ns": 35864
+        },
+        "roi.translate": {
+          "calls": 3,
+          "total_ns": 30977,
+          "last_ns": 9144
+        },
+        "roi.reconcile": {
+          "calls": 3,
+          "total_ns": 32488,
+          "last_ns": 8322
+        }
+      },
+      "cache": {
+        "hits": 1,
+        "misses": 4,
+        "entries": 4
+      }
+    },
+    {
+      "round": 4,
+      "method": "full",
+      "sequence_ns": 13990476881,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 1965823842,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 1944907326,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1963531048,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2097151919,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2065044348,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1967598832,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 1986419566,
+          "read": {
+            "mode": "full"
+          }
+        }
+      ],
+      "stages": {
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 13990338342,
+          "last_ns": 1986399225
+        }
+      },
+      "cache": null
+    },
+    {
+      "round": 5,
+      "method": "full",
+      "sequence_ns": 15730929407,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 1934416222,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2196731965,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2516121330,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2150987731,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 2539040744,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2140603068,
+          "read": {
+            "mode": "full"
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2253028347,
+          "read": {
+            "mode": "full"
+          }
+        }
+      ],
+      "stages": {
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 15730784369,
+          "last_ns": 2253007046
+        }
+      },
+      "cache": null
+    },
+    {
+      "round": 5,
+      "method": "incremental",
+      "sequence_ns": 4570999850,
+      "frames": [
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 1966650861,
+          "read": {
+            "mode": "full",
+            "reason": "first frame",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 371839,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 144993206,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 316175,
+          "read": {
+            "mode": "unchanged",
+            "reason": "same pixels",
+            "regions": []
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Ready"
+          ],
+          "elapsed_ns": 200466576,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 198,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 580472,
+          "read": {
+            "mode": "regions",
+            "reason": "local change",
+            "regions": [
+              {
+                "left": 520,
+                "top": 185,
+                "right": 728,
+                "bottom": 312
+              }
+            ]
+          }
+        },
+        {
+          "expected": [
+            "Start",
+            "Done"
+          ],
+          "elapsed_ns": 2257620721,
+          "read": {
+            "mode": "full",
+            "reason": "large change",
+            "regions": []
+          }
+        }
+      ],
+      "stages": {
+        "cache.hash": {
+          "calls": 5,
+          "total_ns": 2933408,
+          "last_ns": 1458181
+        },
+        "cache.lookup": {
+          "calls": 5,
+          "total_ns": 8814,
+          "last_ns": 1482
+        },
+        "ocr.infer": {
+          "calls": 4,
+          "total_ns": 4565791897,
+          "last_ns": 2256050102
+        },
+        "ocr.read": {
+          "calls": 7,
+          "total_ns": 4570964549,
+          "last_ns": 2257616585
+        },
+        "diff": {
+          "calls": 6,
+          "total_ns": 1404441,
+          "last_ns": 39460
+        },
+        "merge": {
+          "calls": 3,
+          "total_ns": 119628,
+          "last_ns": 38968
+        },
+        "roi.plan": {
+          "calls": 3,
+          "total_ns": 154020,
+          "last_ns": 52879
+        },
+        "roi.crop": {
+          "calls": 3,
+          "total_ns": 108143,
+          "last_ns": 37737
+        },
+        "roi.translate": {
+          "calls": 3,
+          "total_ns": 31457,
+          "last_ns": 8433
+        },
+        "roi.reconcile": {
+          "calls": 3,
+          "total_ns": 33030,
+          "last_ns": 7401
+        }
+      },
+      "cache": {
+        "hits": 1,
+        "misses": 4,
+        "entries": 4
+      }
+    }
+  ],
+  "worker": true
+}

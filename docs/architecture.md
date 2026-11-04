@@ -1,7 +1,9 @@
-# Phase 1 architecture
+# Capture, recognition, and input
 
 Yousif Lubbad's Sightline starts with explicit interfaces so future performance
 work can replace one stage without changing what a frame or detection means.
+The [Phase 2 guide](phase2.md) describes incremental reads, the process worker,
+the native kernels, and timing counters.
 
 | Module | Contract |
 | --- | --- |

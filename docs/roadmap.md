@@ -7,7 +7,7 @@ Every commit should represent a useful change; there are no empty-history target
 | Phase | Scope | State |
 | --- | --- | --- |
 | 1 | Package, tests, lint/types, CI, frame sources, EasyOCR, unique text click, native demo | Implemented; [validation record](phase1.md) |
-| 2 | NumPy frame diff, changed regions, ROI OCR/cache/worker, C hot path, timing and benchmarks | Planned |
+| 2 | NumPy frame diff, changed regions, ROI OCR/cache/worker, C hot path, timing and benchmarks | Implemented; [measurements and validation](phase2.md) |
 | 3 | Toggleable preprocessing, template/feature matching, controls, video and webcam sources | Planned |
 | 4 | Scene elements, spatial relations, RTL-aware relations, tracking, serialization | Planned |
 | 5 | Chained/fuzzy locators, recovery logs, mouse paths, typing, stable waits, verification | Planned |
