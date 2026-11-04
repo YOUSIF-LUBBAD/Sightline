@@ -12,7 +12,7 @@ from email.parser import Parser
 from pathlib import Path
 
 
-def verify(directory: Path) -> None:
+def verify(directory: Path, *, native: bool = False) -> None:
     wheels = list(directory.glob("*.whl"))
     archives = list(directory.glob("*.tar.gz"))
     if len(wheels) != 1 or len(archives) != 1:
@@ -20,7 +20,15 @@ def verify(directory: Path) -> None:
     wheel = wheels[0].resolve()
     with zipfile.ZipFile(wheel) as package:
         names = set(package.namelist())
-        required = {"sightline/session.py", "sightline/desktop.py", "sightline/py.typed"}
+        required = {
+            "sightline/session.py",
+            "sightline/desktop.py",
+            "sightline/py.typed",
+            "sightline/native_src/pixels.c",
+            "sightline/incremental.py",
+            "sightline/bench.py",
+            "sightline/worker.py",
+        }
         if not required <= names:
             raise ValueError("The wheel is missing the public engine or its type marker")
         for notice in ("LICENSE", "THIRD_PARTY_NOTICES.md"):
@@ -40,6 +48,9 @@ def verify(directory: Path) -> None:
             "examples/demo_app.py",
             "tests/test_live_demo.py",
             "scripts/verify_dist.py",
+            "src/sightline/native_src/pixels.c",
+            "examples/observe_changes.py",
+            "examples/benchmark_ocr.py",
         }
         if not required_source <= source_names:
             raise ValueError("The source archive is missing notices, examples, or validation")
@@ -67,10 +78,29 @@ assert Sightline.__module__ == 'sightline.session'
 assert not {'torch', 'easyocr', 'mss', 'pyautogui'} & sys.modules.keys()
 print('Clean wheel installation and headless public API passed')
 """
+        if native:
+            smoke += """
+from sightline import NativeBackend
+from sightline.diff import changed_tiles
+from sightline.native_build import build_native
+kernel = NativeBackend(build_native(Path.cwd() / "compiled"))
+before = Frame(np.zeros((5, 11, 3), dtype=np.uint8))
+pixels = before.pixels.copy()
+pixels[4,10] = 255
+after = Frame(pixels)
+mask = kernel.changed_tiles(before, after, 4)
+np.testing.assert_array_equal(mask, changed_tiles(before, after, 4))
+assert kernel.merge_tiles(mask) == [(2,1,3,2)]
+print('Installed C source builds and both native kernels pass')
+"""
         subprocess.run([str(executable), "-I", "-c", smoke], cwd=temporary, check=True)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", nargs="?", type=Path, default=Path("dist"))
-    verify(parser.parse_args().directory)
+    parser.add_argument(
+        "--native", action="store_true", help="Build and check the installed C source"
+    )
+    args = parser.parse_args()
+    verify(args.directory, native=args.native)
