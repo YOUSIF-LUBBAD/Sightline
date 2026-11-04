@@ -33,14 +33,14 @@ class ImageFrameSource:
         self._closed = False
 
     @classmethod
-    def from_file(cls, path: str | Path) -> Self:
+    def from_file(cls, path: str | Path, *, source_name: str | None = None) -> Self:
         try:
             with Image.open(path) as image:
                 # Respect camera rotation, then use the same RGB format everywhere.
                 pixels = np.array(ImageOps.exif_transpose(image).convert("RGB"), dtype=np.uint8)
         except (OSError, ValueError) as error:
             raise CaptureError(f"Cannot load image: {path}") from error
-        return cls(Frame(pixels, source=str(path)))
+        return cls(Frame(pixels, source=str(path) if source_name is None else source_name))
 
     def capture(self) -> Frame:
         if self._closed:
