@@ -5,8 +5,21 @@ import numpy as np
 import pytest
 from PIL import Image, ImageDraw, ImageFont
 
+from examples.benchmark_ocr import check_labels, sequence
 from sightline.frame import Frame
+from sightline.incremental import IncrementalOCR
 from sightline.locator import TextLocator
+
+
+@pytest.mark.ocr
+def test_real_incremental_sequence_preserves_both_label_positions(real_ocr) -> None:
+    engine = IncrementalOCR(real_ocr)
+    modes = []
+    for frame, status in sequence():
+        check_labels(engine.read(frame), status)
+        modes.append(engine.last_read.mode)
+    assert modes[:2] == ["full", "unchanged"]
+    assert "regions" in modes and modes[-1] == "full"
 
 
 @pytest.mark.ocr

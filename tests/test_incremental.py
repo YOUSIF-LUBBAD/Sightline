@@ -65,6 +65,20 @@ def test_failed_crop_preserves_last_successful_baseline() -> None:
     assert fast.read(screen(right=True)) == Markers().read(screen(right=True))
 
 
+def test_text_at_an_internal_crop_edge_forces_full_screen_recognition() -> None:
+    class EdgeReader(Markers):
+        def read(self, frame):
+            if frame.width < 140:
+                return (TextDetection("partial", Box(0, 0, 3, 3), 1),)
+            return super().read(frame)
+
+    fast = IncrementalOCR(EdgeReader(), policy=RegionPolicy(tile_size=8, padding=4))
+    fast.read(screen())
+    changed = screen(right=True)
+    assert fast.read(changed) == Markers().read(changed)
+    assert fast.last_read.reason == "label at crop edge"
+
+
 def test_source_resize_and_periodic_refresh() -> None:
     fast = IncrementalOCR(Markers(), policy=RegionPolicy(refresh_interval=2))
     for frame, reason in [
@@ -76,3 +90,26 @@ def test_source_resize_and_periodic_refresh() -> None:
     ]:
         fast.read(frame)
         assert fast.last_read.reason == reason
+
+
+def test_moving_labels_match_whole_frame_reads_at_every_step() -> None:
+    fast = IncrementalOCR(
+        Markers(), policy=RegionPolicy(tile_size=8, padding=4, refresh_interval=200)
+    )
+    rng = np.random.default_rng(422)
+    moves = [tuple(map(int, xy)) for xy in rng.integers(0, 70, (80, 2))]
+    modes = set()
+    for i, (x, y) in enumerate(moves):
+        pixels = np.zeros((79, 141, 3), dtype=np.uint8)
+        if i % 5:
+            pixels[y : y + 13, x : x + 23] = 90
+        if i % 7:
+            pixels[71 - y : 79 - y, 113 - x : 137 - x] = 200
+        frame = Frame(pixels)
+        expected = Markers().read(frame)
+        observed = fast.read(frame)
+        assert sorted(observed, key=lambda d: d.text) == sorted(expected, key=lambda d: d.text)
+        modes.add(fast.last_read.mode)
+        assert fast.read(frame) == observed
+        assert fast.last_read.mode == "unchanged"
+    assert "regions" in modes

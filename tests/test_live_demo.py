@@ -3,21 +3,39 @@
 
 import os
 import time
+from functools import partial
 from pathlib import Path
 
 import pytest
 from PIL import Image
 
 from sightline.desktop import MSSFrameSource
+from sightline.easyocr_engine import EasyOCRConfig, EasyOCREngine
+from sightline.incremental import IncrementalOCR
 from sightline.locator import TextLocator
 from sightline.mouse import PyAutoGUIMouse
+from sightline.native import NativeBackend
+from sightline.native_build import build_native
 from sightline.session import Sightline
+from sightline.worker import ProcessOCR
+
+
+@pytest.fixture(scope="module")
+def native_worker(request, tmp_path_factory):
+    config = EasyOCRConfig(
+        model_directory=request.config.getoption("--model-dir"),
+        download_enabled=request.config.getoption("--download-models"),
+    )
+    backend = NativeBackend(build_native(tmp_path_factory.mktemp("native-worker")))
+    with ProcessOCR(partial(EasyOCREngine, config)) as worker:
+        yield worker, backend
 
 
 @pytest.mark.ocr
 @pytest.mark.live
 @pytest.mark.parametrize("dark, position", [(False, (80, 80)), (True, (250, 170))])
-def test_pixels_to_click_changes_the_native_app(real_ocr, dark, position) -> None:
+@pytest.mark.parametrize("mode", ["full", "incremental"])
+def test_pixels_to_click_changes_the_native_app(request, dark, position, mode) -> None:
     import tkinter as tk
 
     from examples.demo_app import DemoApp
@@ -32,7 +50,12 @@ def test_pixels_to_click_changes_the_native_app(real_ocr, dark, position) -> Non
         with MSSFrameSource(input_size=mouse.desktop_size()) as source:
             # This app stays still until clicked. Full-screen CPU OCR can exceed
             # the normal five-second limit, so this static fixture opts into 30.
-            session = Sightline(source, real_ocr, mouse, max_frame_age=30)
+            if mode == "incremental":
+                worker, backend = request.getfixturevalue("native_worker")
+                engine = IncrementalOCR(worker, backend=backend)
+            else:
+                engine = request.getfixturevalue("real_ocr")
+            session = Sightline(source, engine, mouse, max_frame_age=30)
             preview = session.click_text("Start")
             root.update()
             assert preview.executed is False
@@ -40,6 +63,8 @@ def test_pixels_to_click_changes_the_native_app(real_ocr, dark, position) -> Non
 
             result = session.click_text("Start", execute=True)
             assert result.executed is True
+            if mode == "incremental":
+                assert engine.last_read.mode == "unchanged"
             deadline = time.monotonic() + 2
             while not app.completed and time.monotonic() < deadline:
                 root.update()
@@ -56,7 +81,9 @@ def test_pixels_to_click_changes_the_native_app(real_ocr, dark, position) -> Non
                 directory = Path(output)
                 directory.mkdir(parents=True, exist_ok=True)
                 theme = "dark" if dark else "light"
-                Image.fromarray(result.target.frame.pixels).save(directory / f"{theme}-before.png")
-                Image.fromarray(after.frame.pixels).save(directory / f"{theme}-after.png")
+                Image.fromarray(result.target.frame.pixels).save(
+                    directory / f"{theme}-{mode}-before.png"
+                )
+                Image.fromarray(after.frame.pixels).save(directory / f"{theme}-{mode}-after.png")
     finally:
         root.destroy()
